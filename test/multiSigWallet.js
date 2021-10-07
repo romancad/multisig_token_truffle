@@ -60,25 +60,25 @@ contract('MultiSigWallet', (accounts) => {
 
         // Sign 1
         await multiSigWallet.confirm(txid, {from: accounts[0]});
-        confirms_count = await multiSigWallet._getConfirmationCount.call(txid, {from: accounts[0]});
+        confirms_count = await multiSigWallet.getConfirmationCount.call(txid, {from: accounts[0]});
         assert.equal(confirms_count, 1, 'Confirms count != 1 after confirm!');
         console.log("Sign 1");
 
         // Sign 2
         await multiSigWallet.confirm(txid, {from: accounts[1]});
-        confirms_count = await multiSigWallet._getConfirmationCount.call(txid, {from: accounts[0]});
+        confirms_count = await multiSigWallet.getConfirmationCount.call(txid, {from: accounts[0]});
         assert.equal(confirms_count, 2, 'Confirms count != 2 after confirm!');
         console.log("Sign 2");
 
         // Revoke Sign 2
         await multiSigWallet.revoke(txid, {from: accounts[1]});
-        confirms_count = await multiSigWallet._getConfirmationCount.call(txid, {from: accounts[0]});
+        confirms_count = await multiSigWallet.getConfirmationCount.call(txid, {from: accounts[0]});
         assert.equal(confirms_count, 1, 'Confirms count != 1 after revoke!');
         console.log("Revoke Sign 2");
 
         // Sign 2
         await multiSigWallet.confirm(txid, {from: accounts[1]});
-        confirms_count = await multiSigWallet._getConfirmationCount.call(txid, {from: accounts[0]});
+        confirms_count = await multiSigWallet.getConfirmationCount.call(txid, {from: accounts[0]});
         assert.equal(confirms_count, 2, 'Confirms count != 2 after confirm!');
         console.log("Sign 2");
 
@@ -92,7 +92,7 @@ contract('MultiSigWallet', (accounts) => {
 
         // Sign 3
         await multiSigWallet.confirm(txid, {from: accounts[2]});
-        confirms_count = await multiSigWallet._getConfirmationCount.call(txid, {from: accounts[0]});
+        confirms_count = await multiSigWallet.getConfirmationCount.call(txid, {from: accounts[0]});
         assert.equal(confirms_count, 3, 'Confirms count != 3 after confirm!');
         console.log("Sign 3 and auto transfer");
 
