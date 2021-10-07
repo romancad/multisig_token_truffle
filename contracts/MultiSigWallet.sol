@@ -69,7 +69,6 @@ contract MultiSigWallet {
     }
 
 /*
-
     receive() external payable {
         emit Deposit(msg.sender, msg.value);
     }
@@ -87,7 +86,7 @@ contract MultiSigWallet {
         return txId;
     }
 
-    function _getConfirmationCount(uint _txId) public view returns (uint) {
+    function getConfirmationCount(uint _txId) public view returns (uint) {
         uint count = 0;
         for (uint i = 0; i < owners.length; i++) {
             if (confirmations[_txId][owners[i]]) {
@@ -97,19 +96,6 @@ contract MultiSigWallet {
         return count;
     }
 
-/*
-    function execute(uint _txId) external onlyOwner txExists(_txId) notExecuted(_txId) {
-        Transaction storage transaction = transactions[_txId];
-        require(_getConfirmationCount(_txId) >= SIG_NEEDED, "confirmations < required");
-
-        transaction.executed = true;
-
-        (bool success, ) = transaction.to.call{value: transaction.value / 100}(transaction.data);
-        require(success, "tx failed");
-
-        emit Execute(_txId);
-    }
-*/
 
     function execute(uint _txId) public onlyOwner txExists(_txId) notExecuted(_txId) {
         Transaction storage transaction = transactions[_txId];
@@ -117,7 +103,7 @@ contract MultiSigWallet {
 
         transaction.executed = true;
 
-//        (bool success, ) = transaction.to.call{value: transaction.value / 100}(transaction.data);
+        // (bool success, ) = transaction.to.call{value: transaction.value}(transaction.data);
         bool success = abcToken.transfer(transaction.to, transaction.value);
         require(success, "tx failed");
 
